@@ -147,14 +147,30 @@ FROM chatbot_service_requests
 GROUP BY service_type;
 ```
 
-## Despliegue en Google Cloud Platform
+## Despliegue en Amazon Web Services (AWS)
 
-Para instrucciones detalladas de despliegue en GCP, consulta la documentación en:
-[docs/GCP_DEPLOYMENT.md](docs/GCP_DEPLOYMENT.md)
+Para instrucciones detalladas de despliegue en AWS, consulta la documentación en:
+[docs/AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md)
 
 ### Opciones de Despliegue
-1. **Cloud Run** - Recomendado para comenzar (serverless)
-2. **Google Kubernetes Engine (GKE)** - Para mayor control y escalabilidad
+1. **AWS App Runner** - Recomendado para comenzar (serverless, fácil de usar)
+2. **AWS ECS con Fargate** - Para mayor control y escalabilidad
+3. **AWS RDS PostgreSQL** - Base de datos administrada
+
+### Despliegue Rápido
+
+```bash
+# 1. Configurar AWS CLI
+aws configure
+
+# 2. Ejecutar script de despliegue
+chmod +x aws/deploy.sh
+./aws/deploy.sh
+
+# 3. Seguir instrucciones en docs/AWS_DEPLOYMENT.md
+```
+
+> **Nota**: También incluimos documentación para GCP en [docs/GCP_DEPLOYMENT.md](docs/GCP_DEPLOYMENT.md) si prefieres usar Google Cloud Platform.
 
 ## Estructura del Proyecto
 
