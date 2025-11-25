@@ -322,7 +322,7 @@ export default function ChatWidget() {
           {/* Header */}
           <div className="flex items-center justify-between p-4 text-white rounded-t-lg bg-gradient-to-r from-amber-700 to-amber-900">
             <div>
-              <h3 className="text-lg font-bold">Asistente Virtual</h3>
+              <h3 className="text-lg font-bold">ChaBot</h3>
               <p className="text-xs text-amber-100">Notaría Pública</p>
             </div>
             <button

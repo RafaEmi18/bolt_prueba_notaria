@@ -22,8 +22,3 @@ dist-ssr
 *.sw?
 .env
 
-
-README_POSTGRESQL.md
-
-/database/init.sql
-/supabase

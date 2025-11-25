@@ -2,6 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import pg from 'pg';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -17,9 +22,32 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || '1234',
 });
 
+// Test database connection
+pool.on('connect', () => {
+  console.log('✓ Connected to PostgreSQL database');
+});
+
+pool.on('error', (err) => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
+
+// Serve static files from React build in production
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, '..', 'dist');
+  app.use(express.static(distPath));
+  console.log(`✓ Serving static files from: ${distPath}`);
+}
 
 // Health check
 app.get('/health', (req, res) => {
@@ -459,9 +487,21 @@ app.post('/api/chatbot/service-request', async (req, res) => {
   }
 });
 
+// Serve React app for all other routes in production
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+  });
+}
+
 const PORT = process.env.PORT || 3001;
 
+// Start server
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log('='.repeat(50));
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🗄️  Database: ${process.env.DB_NAME || 'notaria_db'}@${process.env.DB_HOST || 'localhost'}`);
+  console.log('='.repeat(50));
 });
 
